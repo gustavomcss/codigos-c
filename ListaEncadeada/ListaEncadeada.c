@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 typedef struct lista {
+	int posicao;
 	int elemento;
 	struct lista *proximo;
 } Lista;
@@ -15,8 +16,12 @@ int main() {
 	proximoPonteiro = ponteiroInicial;
 	
 	do {
-		printf("Entre com o %do valor: ", (i));
-		scanf("%d", &proximoPonteiro -> elemento);
+		printf("Entre com a posicao do elemento: ");
+		scanf("%d", &proximoPonteiro->posicao);
+		
+		printf("Entre com o %do valor: ", (proximoPonteiro->posicao));
+		scanf("%d", &proximoPonteiro->elemento);
+		
 		printf("\nDeseja continuar? \n\n[1] - Sim\n[2] - Nao\n\nSua Resposta: ");
 		scanf("%d", &resp);
 		system("cls");
@@ -34,11 +39,9 @@ int main() {
 	proximoPonteiro->proximo = NULL;
 	proximoPonteiro = ponteiroInicial;
 	
-	int j = 1;
 	while (proximoPonteiro != NULL) {
-		printf("Elemento [%d]: %d\n", j, proximoPonteiro->elemento);
+		printf("Elemento [%d]: %d\n", proximoPonteiro->posicao, proximoPonteiro->elemento);
 		proximoPonteiro = proximoPonteiro->proximo;
-		j++;
 	}
 	
 	return 0;
