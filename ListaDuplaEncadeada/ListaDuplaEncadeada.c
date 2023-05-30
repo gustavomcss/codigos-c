@@ -51,14 +51,15 @@ int main() {
 	ponteiroAtual = ponteiroInicial;
 	
 	while (ponteiroAtual != NULL) {
-		printf("Posicao Anterior: %d\n", ponteiroAtual->anterior);
-        printf("POSICAO ATUAL: %d\n", ponteiroAtual);
+		printf("Posicao Anterior: %p\n", ponteiroAtual->anterior);
+        printf("POSICAO ATUAL: %p\n", ponteiroAtual);
         printf("ELEMENTO SALVO: %d\n", ponteiroAtual->elemento);
-        printf("Posicao Proximo: %d\n", ponteiroAtual->proximo);
+        printf("Posicao Proximo: %p\n", ponteiroAtual->proximo);
         printf("\n");
         ponteiroAtual = ponteiroAtual->proximo;
 	}
 	
+	system("pause");
 	return 0;
 }
 
