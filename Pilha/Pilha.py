@@ -3,9 +3,6 @@ class Pilha:
         self.topo = -1
         self.itens = [0] * 5
 
-def inicializar(p):
-    p.topo = -1
-
 def mostrar_menu():
     print("------------------- MENU -------------------\n")
     print("[1] - Inserir um elemento na Pilha")
@@ -48,7 +45,6 @@ def verificar_condicao_pilha(p):
         print("\n\n\n")
 
 p = Pilha()
-inicializar(p)
 
 while True:
     opc = mostrar_menu()
