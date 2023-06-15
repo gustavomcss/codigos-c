@@ -1,3 +1,5 @@
+import os
+
 class ListaEncad:
     def __init__ (self):
         self.anterior = None
@@ -7,6 +9,12 @@ class ListaEncad:
 
 ponteiroInicial = ListaEncad()
 ponteiroAtual = ponteiroInicial
+
+def pause():
+    if os.name == 'nt':
+        os.system('pause')
+    else:
+        input('Pressione Enter para continuar...')
 
 while True:
     print("-------------- ENTRADA --------------\n")
@@ -34,4 +42,5 @@ while ponteiroInicial is not None:
 
     print()
     ponteiroInicial = ponteiroInicial.proximo
-
+    
+pause()
