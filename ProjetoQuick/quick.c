@@ -1,19 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
-#include <Windows.h>
 
 /* VETOR DE 100 ELEMENTOS */
+
+void swap(int vetor[], int a, int b) {
+    int t = vetor[a];
+    vetor[a] = vetor[b];
+    vetor[b] = t;
+    // printf("Troca de [%d] [%d] : (%d, %d) \n", a, b, vetor[b], vetor[a]);
+}
+
+int particiona(int vetor[], int esq, int dir, int pivot, int *comp, int *trocas) {
+    
+    // Se o subvetor possui tamanho > 1
+	while (esq <= dir) { 
+	 	
+		// Comparação do lado esquerdo ao pivô
+        while (vetor[esq] < pivot) {
+            esq++;
+            (*comp)++;
+        }
+
+		// Comparação do lado direito ao pivô
+        while (vetor[dir] > pivot) {
+            dir--;
+            (*comp)++;
+        }
+	
+        if (esq <= dir) {
+            if (esq != dir) {
+            	
+            	// Troca de posições com maior que o pivo (esq) e menor que o pivo (dir)
+                swap(vetor, esq, dir); 
+                (*trocas)++;
+            } 
+
+			esq++;
+			dir--;
+        }
+    }
+    
+    return esq; // Retorna o pivô
+}
+
+void quick(int vetor[], int esq, int dir, int *comp, int *trocas) {
+    
+	if (esq >= dir) {
+        return;
+    }
+
+    int pivot = vetor[(esq + dir) / 2]; // Escolha do pivo (Meio)
+    
+	int index = particiona(vetor, esq, dir, pivot, comp, trocas); // Particiona o Vetor
+    quick(vetor, esq, index - 1, comp, trocas); // Começa a ordenação da parte esquerda ao pivô
+    quick(vetor, index, dir, comp, trocas); // Começa a ordenação da parte direta ao pivô
+    
+}
 
 int main(int argc, char *argv[]) {
 	int vetor_cresc[100];
 	int vetor[100];     
-	int vetor_decresc[100];     
+	int vetor_decresc[100]; 
+	    
 	int i, j, aux;
-	srand((time)NULL);  
+	srand(time(NULL));  
 	
-	printf("================ VETORES GERADOS ================\n\n");
+	printf("================= VETORES GERADOS =================\n\n");
 	
 	printf("VETOR CRESCENTE: \n");
 	int num_cresc = 1;
@@ -61,53 +114,25 @@ int main(int argc, char *argv[]) {
 	printf("\n\n");
 
 
-	// Bubble Valor Crescente
+	// Quick Valor Crescente
 	int comp_cresc = 0;
 	int troca_cresc = 0;
-	for (i = 0; i < 99; i++) {
-		for (j = 0; j < 99; j++) {
-			comp_cresc++;
-			if (vetor_cresc[j] > vetor_cresc[j+1]) {				
-				aux = vetor_cresc[j];
-				vetor_cresc[j] = vetor_cresc[j+1];
-				vetor_cresc[j+1] = aux;
-				troca_cresc++;
-			}
-		}
-	}
+	quick(vetor_cresc, 0, 99, &comp_cresc, &troca_cresc);
 	
-	// Bubble Vetor Aleatório
+	// Quick Vetor Aleatório
 	int comp = 0;  
 	int troca = 0;
-	for (i = 0; i < 99; i++) {
-		for (j = 0; j < 99; j++) {
-			comp++;
-			if (vetor[j] > vetor[j+1]) {				
-				aux = vetor[j];
-				vetor[j] = vetor[j+1];
-				vetor[j+1] = aux;
-				troca++;
-			}
-		}
-	}
-	
-	// Bubble Vetor Decrescente
-	int comp_decresc;
+	quick(vetor, 0, 99, &comp, &troca);
+
+	// Quick Vetor Decrescente
+	int comp_decresc = 0;
 	int troca_decresc = 0;
-	for (i = 0; i < 99; i++) {
-		for (j = 0; j < 99; j++) {
-			comp_decresc++;
-			if (vetor_decresc[j] > vetor_decresc[j+1]) {				
-				aux = vetor_decresc[j];
-				vetor_decresc[j] = vetor_decresc[j+1];
-				vetor_decresc[j+1] = aux;
-				troca_decresc++;
-			}
-		}
-	}
+	quick(vetor_decresc, 0, 99, &comp_decresc, &troca_decresc);
+	
 	
 	system("pause");
 	system("cls");
+	
 	printf("================ VETORES ORDENADOS ================");
 	
 	printf("\n\nVETOR CRESCENTE: \n");
@@ -137,6 +162,7 @@ int main(int argc, char *argv[]) {
 	printf("\n\n");
 	system("pause");
 	system("cls");
+	
 	printf("================ RESULTADOS ================");
 	
 	printf("\n\nVETOR CRESCENTE: ");

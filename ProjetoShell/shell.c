@@ -1,28 +1,64 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
-#include <Windows.h>
 
-/* VETOR DE 1000 ELEMENTOS */
+/* VETOR DE 100 ELEMENTOS */
+
+void shell(int vetor[], int tamanho, int *comp, int *trocas) {
+	int i, intervalo = tamanho;
+	float h = tamanho;
+	
+	// Enquanto intervalo != 0, continua dividindo e ordenando o vetor
+	while (intervalo != 1) {
+		h = intervalo;
+		
+		h = h / 2.0;
+		intervalo = intervalo / 2;
+		
+		if (h > intervalo) {
+			intervalo = intervalo + 1;
+		}
+		
+		// Aplica a inserção direta com o intervalo atual
+		for (i = intervalo; i < tamanho; i++) {
+			int temp = vetor[i];
+			int j = i - intervalo;
+			
+			// Move os elementos de cada intervalo para frente enquanto fora de ordem
+			while (j >= 0 && temp < vetor[j]) {
+				vetor[j + intervalo] = vetor[j];
+				j = j - intervalo;
+				(*trocas)++;
+			}
+			(*comp)++;
+			
+			// Se houve troca anteriormente, realiza a troca para ajeitar as coisas
+			if ((j + intervalo) != i) {
+				vetor[j + intervalo] = temp;
+				
+			}
+			
+		}
+	}
+}
 
 int main(int argc, char *argv[]) {
-	int vetor_cresc[1000];
-	int vetor[1000];     
-	int vetor_decresc[1000];     
+	int vetor_cresc[100];
+	int vetor[100];     
+	int vetor_decresc[100];     
 	int i, j, aux;
-	srand((time)NULL);  
+	srand(time(NULL));  
 	
 	printf("================ VETORES GERADOS ================\n\n");
 	
 	printf("VETOR CRESCENTE: \n");
 	int num_cresc = 1;
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 100; i++) {
 		vetor_cresc[i] = num_cresc;
 		num_cresc++;
 	}
 	
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 100; i++) {
 		if (i % 20 == 0) {
 			printf("\n");
 		}
@@ -32,11 +68,11 @@ int main(int argc, char *argv[]) {
 	
 	
 	printf("VETOR ALEATORIO: \n");
-	for (i = 0; i < 1000; i++) {
-		vetor[i] = rand()%1000;
+	for (i = 0; i < 100; i++) {
+		vetor[i] = rand()%100;
 	}
 	
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 100; i++) {
 		if (i % 20 == 0) {
 			printf("\n");
 		}
@@ -46,13 +82,13 @@ int main(int argc, char *argv[]) {
 	
 	
 	printf("VETOR DECRESCENTE: \n");
-	int num_decresc = 1000;
-	for (i = 0; i < 1000; i++) {
+	int num_decresc = 100;
+	for (i = 0; i < 100; i++) {
 		vetor_decresc[i] = num_decresc;
 		num_decresc--;
 	}
 	
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 100; i++) {
 		if (i % 20 == 0) {
 			printf("\n");
 		}
@@ -61,57 +97,29 @@ int main(int argc, char *argv[]) {
 	printf("\n\n");
 
 
-	// Bubble Valor Crescente
+	// Shell Valor Crescente
 	int comp_cresc = 0;
 	int troca_cresc = 0;
-	for (i = 0; i < 999; i++) {
-		for (j = 0; j < 999; j++) {
-			comp_cresc++;
-			if (vetor_cresc[j] > vetor_cresc[j+1]) {				
-				aux = vetor_cresc[j];
-				vetor_cresc[j] = vetor_cresc[j+1];
-				vetor_cresc[j+1] = aux;
-				troca_cresc++;
-			}
-		}
-	}
+	shell(vetor_cresc, 100, &comp_cresc, &troca_cresc);
 	
-	// Bubble Vetor Aleatório
+	// Shell Vetor Aleatório
 	int comp = 0;  
 	int troca = 0;
-	for (i = 0; i < 999; i++) {
-		for (j = 0; j < 999; j++) {
-			comp++;
-			if (vetor[j] > vetor[j+1]) {				
-				aux = vetor[j];
-				vetor[j] = vetor[j+1];
-				vetor[j+1] = aux;
-				troca++;
-			}
-		}
-	}
+	shell(vetor, 100, &comp, &troca);
 	
-	// Bubble Vetor Decrescente
-	int comp_decresc;
+	// Shell Vetor Decrescente
+	int comp_decresc = 0;
 	int troca_decresc = 0;
-	for (i = 0; i < 999; i++) {
-		for (j = 0; j < 999; j++) {
-			comp_decresc++;
-			if (vetor_decresc[j] > vetor_decresc[j+1]) {				
-				aux = vetor_decresc[j];
-				vetor_decresc[j] = vetor_decresc[j+1];
-				vetor_decresc[j+1] = aux;
-				troca_decresc++;
-			}
-		}
-	}
+	shell(vetor_decresc, 100, &comp_decresc, &troca_decresc);
+	
 	
 	system("pause");
 	system("cls");
+	
 	printf("================ VETORES ORDENADOS ================");
 	
 	printf("\n\nVETOR CRESCENTE: \n");
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 100; i++) {
 		if (i % 20 == 0) {
 			printf("\n");
 		}
@@ -119,7 +127,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	printf("\n\nVETOR ALEATORIO: \n");
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 100; i++) {
 		if (i % 20 == 0) {
 			printf("\n");
 		}
@@ -127,7 +135,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	printf("\n\nVETOR DECRESCENTE: \n");
-	for (i = 0; i < 1000; i++) {
+	for (i = 0; i < 100; i++) {
 		if (i % 20 == 0) {
 			printf("\n");
 		}
@@ -137,12 +145,13 @@ int main(int argc, char *argv[]) {
 	printf("\n\n");
 	system("pause");
 	system("cls");
+	
 	printf("================ RESULTADOS ================");
 	
 	printf("\n\nVETOR CRESCENTE: ");
 	printf("\nNumero de Comparacoes: %d", comp_cresc);
 	printf("\nNumero de Trocas: %d", troca_cresc);
-	printf("\nTempo Decorrido: %.2f", (0.001 * troca_cresc));
+	printf("\nTempo Decorrido: %.2f", (0.0001 * troca_cresc));
 	
 	printf("\n\nVETOR ALEATORIO: ");
 	printf("\nNumero de Comparacoes: %d", comp);
